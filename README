@@ -1,0 +1,10 @@
+socky_gem
+===========
+
+Socky is a WebSocket server and client for Ruby on Rails
+
+Please do not use it right now - it's unstable version so please wait for more stable(at last 0.1)
+
+=======
+
+Copyright (c) 2010 Bernard Potocki, released under the MIT license
