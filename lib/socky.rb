@@ -2,8 +2,8 @@ require 'rubygems'
 require 'logger'
 require 'fileutils'
 require 'em-websocket'
-require 'em-websocket_hacks'
 $:.unshift(File.dirname(__FILE__))
+require 'em-websocket_hacks'
 
 module Socky
 
