@@ -32,6 +32,8 @@ module Socky
 :unsubscribe_url: http://localhost:3000/socky/unsubscribe
 
 :secret: my_secret_key
+
+# :timeout: 3
 EOF
 
     end

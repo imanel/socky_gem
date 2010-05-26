@@ -8,6 +8,7 @@ begin
     gemspec.homepage = "http://github.com/imanel/socky_gem"
     gemspec.authors = ["Bernard Potocki"]
     gemspec.add_dependency('em-websocket', '>= 0.0.6')
+    gemspec.add_dependency('em-http-request')
     gemspec.files.exclude ".gitignore"
   end
 rescue LoadError
