@@ -1,30 +1,34 @@
+require 'yaml'
+require 'erb'
+
 module Socky
-  module Options
-    module Config
+  class Options
+    class Config
 
-      def read_config_file
-        if !File.exists?(config_path)
-          puts "You must generate a config file (socky -g filename.yml)"
+      class << self
+        def read(path)
+          if !File.exists?(path)
+            puts "You must generate a config file (socky -g filename.yml)"
+            exit
+          end
+
+          YAML::load(ERB.new(IO.read(path)).result)
+        end
+
+        def generate(path)
+          if File.exists?(path)
+            puts "Config file already exists. You must remove it before generating a new one."
+            exit
+          end
+          puts "Generating config file...."
+          File.open(path, 'w+') do |file|
+            file.write DEFAULT_CONFIG_FILE
+          end
+          puts "Config file generated at #{path}"
           exit
         end
 
-        self.options = YAML::load(ERB.new(IO.read(config_path)).result).merge!(self.options)
-      end
-
-      def generate_config_file
-        if File.exists?(config_path)
-          puts "Config file already exists. You must remove it before generating a new one."
-          exit
-        end
-        puts "Generating config file...."
-        File.open(config_path, 'w+') do |file|
-          file.write DEFAULT_CONFIG_FILE
-        end
-        puts "Config file generated at #{config_path}"
-        exit
-      end
-
-      DEFAULT_CONFIG_FILE= <<-EOF
+        DEFAULT_CONFIG_FILE= <<-EOF
 :port: 8080
 :debug: false
 
@@ -35,6 +39,7 @@ module Socky
 
 # :timeout: 3
 EOF
+      end
 
     end
   end

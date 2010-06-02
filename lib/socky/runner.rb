@@ -1,7 +1,6 @@
 module Socky
   class Runner
     include Socky::Misc
-    include Socky::Options
 
     class << self
       def run(argv = ARGV)
@@ -10,7 +9,7 @@ module Socky
     end
 
     def initialize(argv = ARGV)
-      prepare_options(argv)
+      Options.prepare(argv)
       start
     end
 

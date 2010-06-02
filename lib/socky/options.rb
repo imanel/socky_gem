@@ -1,28 +1,26 @@
-require 'optparse'
-require 'yaml'
-require 'erb'
 require 'socky/options/config'
 require 'socky/options/parser'
 
 module Socky
-  module Options
-    include Socky::Options::Config
-    include Socky::Options::Parser
+  class Options
+    include Socky::Misc
 
-    def prepare_options(argv)
-      self.options = {
-        :config_path => config_path
-      }
+    class << self
+      def prepare(argv)
+        self.options = {
+          :config_path => config_path,
+          :port => 8080,
+          :debug => false,
+          :deep_debug => false,
+          :log_path => log_path
+        }
 
-      parse_options(argv)
-      read_config_file
+        parsed_options = Parser.parse(argv)
+        config_options = Config.read(parsed_options[:config_path] || config_path)
 
-      self.options = {
-        :port => 8080,
-        :debug => false,
-        :deep_debug => false,
-        :log_path => log_path
-      }.merge(self.options)
+        self.options.merge!(config_options)
+        self.options.merge!(parsed_options)
+      end
     end
 
   end
