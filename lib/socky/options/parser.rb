@@ -7,7 +7,7 @@ module Socky
       class << self
         def parse(argv)
           result = {}
-          OptionParser.new do |opts|
+          opts = OptionParser.new do |opts|
             opts.summary_width = 25
             opts.banner = "Usage: socky [options]\n"
 
@@ -55,8 +55,13 @@ module Socky
               puts "Socky #{VERSION}"
               exit
             end
-          end.parse!(argv)
+          end
+          opts.parse!(argv)
           result
+        rescue OptionParser::InvalidOption => e
+          puts "#{opts}\n"
+          puts e.message
+          exit
         end
       end
 
