@@ -27,7 +27,7 @@ module Socky
           raise(InvalidConfig, "Provided config file is invalid.") unless result.is_a?(Hash)
           result
         rescue SockyError => e
-          puts e
+          puts e.message
           exit
         end
 
@@ -38,7 +38,7 @@ module Socky
           end rescue raise(ConfigUnavailable, "Config file is unavailable - please choose another.")
           raise(SuccessfullyCreated, "Config file generated at #{path}")
         rescue SockyError => e
-          puts e
+          puts e.message
           exit
         end
 
