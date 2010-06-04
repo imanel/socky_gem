@@ -35,7 +35,7 @@ module Socky
           raise(AlreadyExists, "Config file already exists. You must remove it before generating a new one.") if File.exists?(path)
           File.open(path, 'w+') do |file|
             file.write DEFAULT_CONFIG_FILE
-          end rescue raise (ConfigUnavailable, "Config file is unavailable - please choose another.")
+          end rescue raise(ConfigUnavailable, "Config file is unavailable - please choose another.")
           raise(SuccessfullyCreated, "Config file generated at #{path}")
         rescue SockyError => e
           puts e
