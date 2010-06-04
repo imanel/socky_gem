@@ -9,7 +9,7 @@ describe Socky::Options::Config do
       described_class.stub!(:puts)
     end
     
-    context "on read" do
+    context "#read" do
       it "should raise error if file doesn't exists" do
         described_class.should_receive(:puts).with("You must generate a config file (socky -g filename.yml)")
         lambda { described_class.read("abstract") }.should raise_error SystemExit
@@ -24,7 +24,7 @@ describe Socky::Options::Config do
       end
     end
     
-    context "on generate" do
+    context "#generate" do
       it "should raise error if file exists" do
         described_class.should_receive(:puts).with("Config file already exists. You must remove it before generating a new one.")
         lambda { described_class.generate(FILES_DIR + "/invalid.yml") }.should raise_error SystemExit
