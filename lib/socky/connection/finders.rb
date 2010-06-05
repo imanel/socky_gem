@@ -8,7 +8,7 @@ module Socky
 
       module ClassMethods
         def find_all
-          connections
+          Socky::Connection.connections
         end
 
         def find(opts = {})
