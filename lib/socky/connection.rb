@@ -22,7 +22,7 @@ module Socky
     end
 
     def admin
-      socket.request["Query"]["admin"] == "1"
+      ["true","1"].include?(socket.request["Query"]["admin"])
     end
 
     def client
@@ -65,11 +65,11 @@ module Socky
     end
 
     def add_to_pool
-      @@connections << self unless self.admin || @@connections.include?(self)
+      self.class.connections << self unless self.admin || self.class.connections.include?(self)
     end
 
     def remove_from_pool
-      @@connections.delete(self)
+      self.class.connections.delete(self)
     end
 
     def to_json
