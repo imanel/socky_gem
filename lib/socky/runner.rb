@@ -4,13 +4,13 @@ module Socky
 
     class << self
       def run(argv = ARGV)
-        self.new(argv)
+        server = self.new(argv)
+        server.start
       end
     end
 
     def initialize(argv = ARGV)
       Options.prepare(argv)
-      start
     end
 
     def start
