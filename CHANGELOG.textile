@@ -1,0 +1,25 @@
+h1. Changelog
+
+h2. 0.0.8 / 2010-06-06
+
+* new features:
+** full rspec suite
+** allow admin param to be both "1" and "true"
+* bugfixes:
+** proper configuration options parsing order
+** rescue from invalid config file
+** rescue from invalid args
+** symbolize_keys will no longer raise error if argument is not hash
+** modules will no longer depend on parent class
+** message will no longer raise exeption is JSON is invalid
+
+h2. 0.0.7 / 2010-05-25
+
+* new features:
+** user authentication is now async
+* bugfixes:
+** server will no longer fail when starting from source instead of gem
+
+h2. 0.0.6 / 2010-05-24
+
+* initial release
