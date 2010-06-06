@@ -60,11 +60,11 @@ module Socky
       end
 
       def params_for_request
-        params = {}
-        params.merge!(:client_id => self.client) unless self.client.nil?
-        params.merge!(:client_secret => self.secret) unless self.secret.nil?
-        params.merge!(:channels => self.channels) unless self.channels.empty?
-        params
+        {
+          :client_id => client,
+          :client_secret => secret,
+          :channels => channels
+        }.reject{|key,value| value.nil? || value.empty?}
       end
 
     end

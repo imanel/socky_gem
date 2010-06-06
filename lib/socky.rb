@@ -7,8 +7,7 @@ require 'em-websocket_hacks'
 
 module Socky
 
-  class SockyError < StandardError #:nodoc:
-  end
+  class SockyError < StandardError; end #:nodoc:
 
   VERSION = File.read(File.dirname(__FILE__) + '/../VERSION').strip
 
@@ -23,14 +22,11 @@ module Socky
 
     def logger
       return @logger if defined?(@logger) && !@logger.nil?
-      FileUtils.mkdir_p(File.dirname(log_path))
-      @logger = Logger.new(log_path)
-      @logger.level = Logger::INFO unless options[:debug]
-      @logger
+      path = log_path
+      FileUtils.mkdir_p(File.dirname(path))
+      prepare_logger(path)
     rescue
-      @logger = Logger.new(STDOUT)
-      @logger.level = Logger::INFO unless options[:debug]
-      @logger
+      prepare_logger(STDOUT)
     end
 
     def logger=(logger)
@@ -43,6 +39,14 @@ module Socky
 
     def config_path
       options[:config_path] || File.join(%w( / var run socky.yml ))
+    end
+
+    private
+
+    def prepare_logger(output)
+      @logger = Logger.new(output)
+      @logger.level = Logger::INFO unless options[:debug]
+      @logger
     end
   end
 end

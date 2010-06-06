@@ -36,11 +36,11 @@ module Socky
         private
 
         def filter_by_clients(connections, clients)
-          connections.collect{ |con| con if clients.include? con.client }.compact
+          connections.collect{ |connection| connection if clients.include? connection.client }.compact
         end
 
         def filter_by_channels(connections, channels)
-          connections.collect{ |con| con if channels.any?{ |chan| con.channels.include?(chan) } }.compact
+          connections.collect{ |connection| connection if channels.any?{ |channel| connection.channels.include?(channel) } }.compact
         end
 
       end

@@ -41,7 +41,7 @@ module Socky
       case params[:command].to_sym
         when :broadcast then broadcast
         when :query then query
-        else raise(InvalidQuery, "unknown command")
+        else raise
       end
     rescue
       raise(InvalidQuery, "unknown command")
@@ -52,7 +52,7 @@ module Socky
         when :to_clients then broadcast_to_clients
         when :to_channels then broadcast_to_channels
         when :to_clients_on_channels then broadcast_to_clients_on_channels
-        else raise(InvalidQuery, "unknown broadcast type")
+        else raise
       end
     rescue
       raise(InvalidQuery, "unknown broadcast type")
@@ -77,7 +77,7 @@ module Socky
     def query
       case params[:type].to_sym
         when :show_connections then query_show_connections
-        else raise(InvalidQuery, "unknown query type")
+        else raise
       end
     rescue
       raise(InvalidQuery, "unknown query type")

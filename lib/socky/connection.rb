@@ -62,12 +62,20 @@ module Socky
       socket.close_connection_after_writing
     end
 
+    def connection_pool
+      self.class.connections
+    end
+
+    def in_connection_pool?
+      connection_pool.include?(self)
+    end
+
     def add_to_pool
-      self.class.connections << self unless self.admin || self.class.connections.include?(self)
+      connection_pool << self unless self.admin || in_connection_pool?
     end
 
     def remove_from_pool
-      self.class.connections.delete(self)
+      connection_pool.delete(self)
     end
 
     def to_json
