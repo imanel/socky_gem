@@ -1,6 +1,7 @@
 module Socky
   class Connection
     module Authentication
+      include Socky::Misc
 
       def subscribe_request
         send_subscribe_request do |response|
@@ -27,7 +28,7 @@ module Socky
       end
 
       def authenticate_as_admin
-        true
+        admin
       end
 
       def authenticate_as_user
