@@ -49,9 +49,9 @@ describe Socky::Misc do
       it "return args if args are not hash" do
         @object.symbolize_keys("abstract").should eql("abstract")
       end
-      it "return hash with symbolized keys if args is has" do
-        hash = {"aaa" => "a", "bbb" => "b"}
-        @object.symbolize_keys(hash).should eql({:aaa => "a", :bbb => "b"})
+      it "return hash with symbolized keys if args is hash" do
+        hash = {"aaa" => "a", 123 => "b"}
+        @object.symbolize_keys(hash).should eql({:aaa => "a", 123 => "b"})
       end
     end
   end

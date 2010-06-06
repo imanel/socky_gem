@@ -40,7 +40,7 @@ module Socky
     def symbolize_keys(hash)
       return hash unless hash.is_a?(Hash)
       hash.inject({}) do |options, (key, value)|
-        options[(key.to_sym rescue key) || key] = value
+        options[(key.to_sym if key.respond_to?(:to_sym)) || key] = value
         options
       end
     end
