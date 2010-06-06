@@ -4,14 +4,9 @@ module Socky
   class Message
     include Socky::Misc
 
-    class UnauthorisedQuery < Socky::SockyError #:nodoc:
-    end
-
-    class InvalidBroadcast < Socky::SockyError #:nodoc:
-    end
-
-    class InvalidQuery < Socky::SockyError #:nodoc:
-    end
+    class InvalidJSON < Socky::SockyError; end #:nodoc:
+    class UnauthorisedQuery < Socky::SockyError; end #:nodoc:
+    class InvalidQuery < Socky::SockyError; end #:nodoc:
 
     attr_reader :params, :creator
 
@@ -21,12 +16,12 @@ module Socky
         m.process
       rescue SockyError => e
         error connection.name, e
-        m.respond e.message
+        connection.send_message(e.message.to_json)
       end
     end
 
     def initialize(creator, message)
-      @params = symbolize_keys JSON.parse(message)
+      @params = symbolize_keys(JSON.parse(message)) rescue raise(InvalidJSON, "invalid request")
       @creator = creator
     end
 
@@ -35,14 +30,21 @@ module Socky
 
       verify_secret!
 
-      case params[:command].to_sym
-        when :broadcast then broadcast
-        when :query then query
-      end
+      execute
     end
 
     def verify_secret!
       raise(UnauthorisedQuery, "invalid secret") unless options[:secret].nil? || options[:secret] == params[:secret]
+    end
+
+    def execute
+      case params[:command].to_sym
+        when :broadcast then broadcast
+        when :query then query
+        else raise(InvalidQuery, "unknown command")
+      end
+    rescue
+      raise(InvalidQuery, "unknown command")
     end
 
     def broadcast
@@ -50,8 +52,10 @@ module Socky
         when :to_clients then broadcast_to_clients
         when :to_channels then broadcast_to_channels
         when :to_clients_on_channels then broadcast_to_clients_on_channels
-        else raise InvalidQuery, "unknown broadcast type"
+        else raise(InvalidQuery, "unknown broadcast type")
       end
+    rescue
+      raise(InvalidQuery, "unknown broadcast type")
     end
 
     def broadcast_to_clients
@@ -73,8 +77,10 @@ module Socky
     def query
       case params[:type].to_sym
         when :show_connections then query_show_connections
-        else raise InvalidQuery, "unknown query type"
+        else raise(InvalidQuery, "unknown query type")
       end
+    rescue
+      raise(InvalidQuery, "unknown query type")
     end
 
     def query_show_connections
