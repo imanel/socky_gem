@@ -59,5 +59,15 @@ describe Socky::Runner do
       end
     end
     
+    it "#stop should call EM.stop" do
+      begin
+        Socky.logger = mock(:logger, :info => nil, :debug => nil)
+        EM.should_receive(:stop)
+        @runner.stop
+      ensure
+        Socky.logger = nil
+      end
+    end
+    
   end
 end
