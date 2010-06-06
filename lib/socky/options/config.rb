@@ -26,8 +26,8 @@ module Socky
           result = YAML::load(ERB.new(IO.read(path)).result)
           raise(InvalidConfig, "Provided config file is invalid.") unless result.is_a?(Hash)
           result
-        rescue SockyError => e
-          puts e.message
+        rescue SockyError => error
+          puts error.message
           exit
         end
 
@@ -37,8 +37,8 @@ module Socky
             file.write DEFAULT_CONFIG_FILE
           end rescue raise(ConfigUnavailable, "Config file is unavailable - please choose another.")
           raise(SuccessfullyCreated, "Config file generated at #{path}")
-        rescue SockyError => e
-          puts e.message
+        rescue SockyError => error
+          puts error.message
           exit
         end
 

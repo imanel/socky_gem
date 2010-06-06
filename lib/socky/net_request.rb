@@ -11,8 +11,8 @@ module Socky
         http.errback  { yield false }
         http.callback { yield http.response_header.status == 200 }
         true
-      rescue => e
-        error "Bad request", e
+      rescue => error
+        error "Bad request", error
         false
       end
 

@@ -20,7 +20,7 @@ module Socky
       end
 
       def send_data(message, connections)
-        connections.each{|c| c.send_message message}
+        connections.each{|connection| connection.send_message message}
       end
 
     end

@@ -12,11 +12,11 @@ module Socky
 
     class << self
       def process(connection, message)
-        m = new(connection, message)
-        m.process
-      rescue SockyError => e
-        error connection.name, e
-        connection.send_message(e.message.to_json)
+        message = new(connection, message)
+        message.process
+      rescue SockyError => error
+        error connection.name, error
+        connection.send_message(error.message.to_json)
       end
     end
 
