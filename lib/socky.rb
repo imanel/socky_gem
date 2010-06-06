@@ -12,31 +12,29 @@ module Socky
 
   VERSION = File.read(File.dirname(__FILE__) + '/../VERSION').strip
 
-  @@options = {}
-
   class << self
     def options
-      @@options
+      @options ||= {}
     end
 
     def options=(val)
-      @@options = val
+      @options = val
     end
 
     def logger
-      return @@logger if defined?(@@logger) && !@@logger.nil?
+      return @logger if defined?(@logger) && !@logger.nil?
       FileUtils.mkdir_p(File.dirname(log_path))
-      @@logger = Logger.new(log_path)
-      @@logger.level = Logger::INFO unless options[:debug]
-      @@logger
+      @logger = Logger.new(log_path)
+      @logger.level = Logger::INFO unless options[:debug]
+      @logger
     rescue
-      @@logger = Logger.new(STDOUT)
-      @@logger.level = Logger::INFO unless options[:debug]
-      @@logger
+      @logger = Logger.new(STDOUT)
+      @logger.level = Logger::INFO unless options[:debug]
+      @logger
     end
 
     def logger=(logger)
-      @@logger = logger
+      @logger = logger
     end
 
     def log_path

@@ -7,13 +7,11 @@ module Socky
     include Socky::Connection::Authentication
     include Socky::Connection::Finders
 
-    @@connections = []
-
     attr_reader :socket
 
     class << self
       def connections
-        @@connections
+        @connections ||= []
       end
     end
 
