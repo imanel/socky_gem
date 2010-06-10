@@ -1,4 +1,10 @@
-EventMachine::WebSocket::Connection.class_eval do
+if defined?(EventMachine::WebSocket::Debugger)
+  klass = EventMachine::WebSocket::Debugger
+else
+  klass = EventMachine::WebSocket::Connection
+end
+
+klass.class_eval do
 
   def debug(*data)
     if @debug

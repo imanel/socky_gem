@@ -3,7 +3,7 @@ h1. Changelog
 h2. Edge
 
 * new features:
-** none
+** support for next version of em-websocket debug options(based on mloughran branch)
 * bugfixes:
 ** socky will no longer crash when when request query is invalid - i.e. chrome 6.0.*(with websocket draft76) and em-websocket 0.0.6
 
