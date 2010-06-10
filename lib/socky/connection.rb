@@ -19,20 +19,24 @@ module Socky
       @socket = socket
     end
 
+    def query
+      socket.request["Query"] || {}
+    end
+
     def admin
-      ["true","1"].include?(socket.request["Query"]["admin"])
+      ["true","1"].include?(query["admin"])
     end
 
     def client
-      socket.request["Query"]["client_id"]
+      query["client_id"]
     end
 
     def secret
-      socket.request["Query"]["client_secret"]
+      query["client_secret"]
     end
 
     def channels
-      @channels ||= socket.request["Query"]["channels"].to_s.split(",").collect(&:strip).reject(&:empty?)
+      @channels ||= query["channels"].to_s.split(",").collect(&:strip).reject(&:empty?)
     end
 
     def subscribe

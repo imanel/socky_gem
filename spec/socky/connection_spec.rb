@@ -37,6 +37,10 @@ describe Socky::Connection do
           @connection.admin.should be_false
         end
       end
+      it "should return false if socket request data is nil" do
+        @connection.socket.request["Query"] = nil
+        @connection.admin.should be_false
+      end
     end
     it "#client should return client_id from socket request data" do
       @connection.socket.request["Query"]["client_id"] = "abstract"
