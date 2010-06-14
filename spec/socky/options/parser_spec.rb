@@ -28,7 +28,14 @@ describe Socky::Options::Parser do
         end
       end
       it "on -p or --port should set port" do
-        described_class.parse(["-p","222"]).should eql({:port => 222})
+        ["-p","--port"].each do |function|
+          described_class.parse([function,"222"]).should eql({:port => 222})
+        end
+      end
+      it "on -s or --secure should set secure mode on" do
+        ["-s","--secure"].each do |function|
+          described_class.parse([function]).should eql({:secure => true})
+        end
       end
       it "on -l or --log should set log_path to provided path" do
         ["-l","--log"].each do |function|

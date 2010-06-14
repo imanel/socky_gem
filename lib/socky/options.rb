@@ -12,6 +12,7 @@ module Socky
           :port => 8080,
           :debug => false,
           :deep_debug => false,
+          :secure => false,
           :log_path => log_path
         }
 

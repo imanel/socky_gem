@@ -25,41 +25,36 @@ describe Socky::Options do
       end
       it "should set Socky options to default hash when parse_options and read_config don't do anything" do
         Socky::Options.prepare([])
-        Socky.options.should eql({:port=>8080,
-                                  :log_path=>"/var/run/socky.log",
-                                  :debug=>false,
-                                  :deep_debug=>false,
-                                  :config_path=>"/var/run/socky.yml"})
+        Socky.options.should eql(default_options.merge(:log_path=>"/var/run/socky.log"))
       end
       it "should value parse_options over default values" do
         Socky::Options::Parser.stub!(:parse).and_return(:log_path => "parsed")
         Socky::Options.prepare([])
-        Socky.options.should eql({:port=>8080,
-                                  :log_path=>"parsed",
-                                  :debug=>false,
-                                  :deep_debug=>false,
-                                  :config_path=>"/var/run/socky.yml"})
+        Socky.options.should eql(default_options.merge(:log_path=>"parsed"))
       end
       it "should value read_config over default values" do
         Socky::Options::Config.stub!(:read).and_return(:log_path => "from config")
         Socky::Options.prepare([])
-        Socky.options.should eql({:port=>8080,
-                                  :log_path=>"from config",
-                                  :debug=>false,
-                                  :deep_debug=>false,
-                                  :config_path=>"/var/run/socky.yml"})
+        Socky.options.should eql(default_options.merge(:log_path=>"from config"))
       end
       it "should value parse_options over read_config" do
         Socky::Options::Config.stub!(:read).and_return(:log_path => "from config")
         Socky::Options::Parser.stub!(:parse).and_return(:log_path => "parsed")
         Socky::Options.prepare([])
-        Socky.options.should eql({:port=>8080,
-                                  :log_path=>"parsed",
-                                  :debug=>false,
-                                  :deep_debug=>false,
-                                  :config_path=>"/var/run/socky.yml"})
+        Socky.options.should eql(default_options.merge(:log_path=>"parsed"))
       end
     end
+  end
+  
+  def default_options
+    {
+      :port => 8080,
+      :log_path => "parsed",
+      :debug => false,
+      :deep_debug => false,
+      :secure => false,
+      :config_path => "/var/run/socky.yml"
+    }
   end
 
 end

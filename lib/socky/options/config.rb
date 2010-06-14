@@ -51,6 +51,8 @@ module Socky
 
 :secret: my_secret_key
 
+:secure: false
+
 # :timeout: 3
 EOF
       end

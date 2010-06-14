@@ -29,6 +29,10 @@ module Socky
               result[:port] = port
             end
 
+            opts.on("-s", "--secure", "Run in wss/ssl mode") do
+              result[:secure] = true
+            end
+
             opts.separator ""; opts.separator "Logging:"
 
             opts.on("-l", "--log FILE", String, "Path to print debugging information.", "(default: #{Socky.log_path})") do |path|

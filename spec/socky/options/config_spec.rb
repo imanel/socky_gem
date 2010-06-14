@@ -55,13 +55,16 @@ describe Socky::Options::Config do
       end
     end
   end
-end
-
-def default_options
-  { :port => 8080,
-    :debug => false,
-    :subscribe_url => "http://localhost:3000/socky/subscribe",
-    :unsubscribe_url => "http://localhost:3000/socky/unsubscribe",
-    :secret => "my_secret_key"
-  }
+  
+  def default_options
+    {
+      :port => 8080,
+      :debug => false,
+      :subscribe_url => "http://localhost:3000/socky/subscribe",
+      :unsubscribe_url => "http://localhost:3000/socky/unsubscribe",
+      :secret => "my_secret_key",
+      :secure => false
+    }
+  end
+  
 end
