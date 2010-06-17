@@ -50,9 +50,8 @@ describe Socky do
         Socky.logger = nil
       end
     end
-    it "should have default log path" do
-      Socky.log_path.should_not be_nil
-      Socky.log_path.should eql("/var/run/socky.log")
+    it "should not have default log path" do
+      Socky.log_path.should be_nil
     end
     it "should be able to change log path by settion log_path option" do
       Socky.stub!(:options).and_return({:log_path => "abstract"})

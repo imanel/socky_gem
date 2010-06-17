@@ -25,7 +25,7 @@ describe Socky::Options do
       end
       it "should set Socky options to default hash when parse_options and read_config don't do anything" do
         Socky::Options.prepare([])
-        Socky.options.should eql(default_options.merge(:log_path=>"/var/run/socky.log"))
+        Socky.options.should eql(default_options)
       end
       it "should value parse_options over default values" do
         Socky::Options::Parser.stub!(:parse).and_return(:log_path => "parsed")
@@ -49,7 +49,7 @@ describe Socky::Options do
   def default_options
     {
       :port => 8080,
-      :log_path => "parsed",
+      :log_path => nil,
       :debug => false,
       :deep_debug => false,
       :secure => false,

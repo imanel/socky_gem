@@ -34,7 +34,7 @@ module Socky
     end
 
     def log_path
-      options[:log_path] || File.join(%w( / var run socky.log ))
+      options[:log_path] || nil
     end
 
     def config_path

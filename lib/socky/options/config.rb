@@ -54,6 +54,8 @@ module Socky
 :secure: false
 
 # :timeout: 3
+
+# :log_path: /var/log/socky.log
 EOF
       end
 
