@@ -13,7 +13,7 @@ module Socky
             debug [self.name, "authentication failed"]
             disconnect
           end
-        end unless authenticated?
+        end unless admin || authenticated?
       end
 
       def unsubscribe_request

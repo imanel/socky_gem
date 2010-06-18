@@ -96,10 +96,14 @@ describe Socky::Connection do
         @connection.process_message("abstract")
       end
     end
-    it "#send_message should send message by socket" do
-      @connection.socket.stub!(:send)
-      @connection.socket.should_receive(:send).with("abstract")
+    it "#send_message should call #send_data with hashed form of message" do
+      @connection.should_receive(:send_data).with({:type => :message, :body => "abstract"})
       @connection.send_message("abstract")
+    end
+    it "#send_data should send message by socket in json format" do
+      @connection.socket.stub!(:send)
+      @connection.socket.should_receive(:send).with({:test => "abstract"}.to_json)
+      @connection.send_data({:test => "abstract"})
     end
     it "#disconnect should close connection after writing" do
       @connection.socket.stub!(:close_connection_after_writing)

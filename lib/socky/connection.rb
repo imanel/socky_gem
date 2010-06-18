@@ -1,3 +1,4 @@
+require 'json'
 require 'socky/connection/authentication'
 require 'socky/connection/finders'
 
@@ -50,7 +51,7 @@ module Socky
     end
 
     def process_message(msg)
-      if admin
+      if admin && authenticated?
         Socky::Message.process(self, msg)
       else
         self.send_message "You are not authorized to post messages"
@@ -58,8 +59,12 @@ module Socky
     end
 
     def send_message(msg)
-      debug [self.name, "sending message", msg.inspect]
-      socket.send msg
+      send_data({:type => :message, :body => msg})
+    end
+
+    def send_data(data)
+      debug [self.name, "sending data", data.inspect]
+      socket.send data.to_json
     end
 
     def disconnect

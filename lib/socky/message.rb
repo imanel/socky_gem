@@ -16,7 +16,7 @@ module Socky
         message.process
       rescue SockyError => error
         error connection.name, error
-        connection.send_message(error.message.to_json)
+        connection.send_message(error.message)
       end
     end
 
@@ -83,7 +83,7 @@ module Socky
     end
 
     def respond(message)
-      creator.send_message(message.to_json)
+      creator.send_message(message)
     end
 
   end

@@ -5,6 +5,9 @@ describe Socky::Connection::Authentication do
   
   context "instance" do
     context "#subscribe_request" do
+      before(:each) do
+        stub!(:admin).and_return(false)
+      end
       it "should not call #send_subscribe_request if already authenticated" do
         stub!(:authenticated?).and_return(true)
         should_not_receive(:send_subscribe_request)
@@ -29,7 +32,6 @@ describe Socky::Connection::Authentication do
         authenticated_by_url?.should be_true
       end
       it "should disconnect if #send_subscribe_request block is false" do
-        stub!(:admin).and_return(false)
         stub!(:send_subscribe_request).and_yield(false)
         should_receive(:disconnect)
         subscribe_request

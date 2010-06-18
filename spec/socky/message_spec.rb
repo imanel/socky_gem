@@ -220,10 +220,6 @@ describe Socky::Message do
         @connection.should_receive(:send_message)
         @message.respond({:test => true})
       end
-      it "should convert message to json" do
-        @connection.should_receive(:send_message).with({:test => true}.to_json)
-        @message.respond({:test => true})
-      end
     end
 
   end
