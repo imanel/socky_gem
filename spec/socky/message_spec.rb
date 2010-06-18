@@ -47,61 +47,31 @@ describe Socky::Message do
   context "instance" do
     before(:each) { @message = described_class.new(@connection, {}.to_json) }
     context "#process" do
-      before(:each) do
-        @message.stub!(:verify_secret!)
-        @message.stub!(:execute)
-      end
-      it "should verify secret" do
-        @message.should_receive(:verify_secret!)
-        @message.process
-      end
-      it "should execute" do
-        @message.should_receive(:execute)
-        @message.process
-      end
-    end
-    context "#verify_secret!" do
-      it "should not raise error if socky option :secret is nil" do
-        Socky.stub!(:options).and_return({:secret => nil})
-        lambda{ @message.verify_secret! }.should_not raise_error Socky::SockyError
-      end
-      it "should raise error if socky options :secret is not nil but message secret have different value" do
-        Socky.stub!(:options).and_return({:secret => "test"})
-        @message.stub!(:options).and_return({:secret => "another"})
-        lambda{ @message.verify_secret! }.should raise_error Socky::SockyError
-      end
-      it "should not raise error if socky options :secret is not nil and message secret have the some value" do
-        Socky.stub!(:options).and_return({:secret => "test"})
-        @message.stub!(:params).and_return({:secret => "test"})
-        lambda{ @message.verify_secret! }.should_not raise_error Socky::SockyError
-      end
-    end
-    context "#execute" do
       it "should call #broadcast if message command is :broadcast" do
         @message.stub!(:params).and_return({:command => :broadcast})
         @message.stub!(:broadcast)
         @message.should_receive(:broadcast)
-        @message.execute
+        @message.process
       end
       it "should not distinguish between string and symbol in command" do
         @message.stub!(:params).and_return({:command => 'broadcast'})
         @message.stub!(:broadcast)
         @message.should_receive(:broadcast)
-        @message.execute
+        @message.process
       end
       it "should call #query if message command is :query" do
         @message.stub!(:params).and_return({:command => :query})
         @message.stub!(:query)
         @message.should_receive(:query)
-        @message.execute
+        @message.process
       end
       it "should raise error if message command is nil" do
         @message.stub!(:params).and_return({:command => nil})
-        lambda {@message.execute}.should raise_error Socky::SockyError
+        lambda {@message.process}.should raise_error Socky::SockyError
       end
       it "should raise error if message command is neither :broadcast nor :query" do
         @message.stub!(:params).and_return({:command => "invalid"})
-        lambda {@message.execute}.should raise_error Socky::SockyError
+        lambda {@message.process}.should raise_error Socky::SockyError
       end
     end
     context "#broadcast" do

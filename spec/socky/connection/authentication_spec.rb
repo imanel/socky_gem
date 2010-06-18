@@ -75,12 +75,14 @@ describe Socky::Connection::Authentication do
       end
     end
     context "#authenticate_as_admin" do
-      it "should return true if admin" do
-        stub!(:admin).and_return(true)
+      it "should return true if client secret is equal server secret" do
+        stub!(:secret).and_return("test")
+        Socky.stub!(:options).and_return({:secret => "test"})
         authenticate_as_admin.should be_true
       end
-      it "should return false if not admin" do
-        stub!(:admin).and_return(false)
+      it "should return false if client secret is not equal server secret" do
+        stub!(:secret).and_return("abstract")
+        Socky.stub!(:options).and_return({:secret => "test"})
         authenticate_as_admin.should be_false
       end
     end

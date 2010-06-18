@@ -28,16 +28,6 @@ module Socky
     def process
       debug [self.name, "processing", params.inspect]
 
-      verify_secret!
-
-      execute
-    end
-
-    def verify_secret!
-      raise(UnauthorisedQuery, "invalid secret") unless options[:secret].nil? || options[:secret] == params[:secret]
-    end
-
-    def execute
       case params[:command].to_sym
         when :broadcast then broadcast
         when :query then query
