@@ -20,7 +20,7 @@ describe Socky::Options do
         Socky::Options.prepare([:a,:b,:c])
       end
       it "should call read_config with patch" do
-        Socky::Options::Config.should_receive(:read).with("/var/run/socky.yml")
+        Socky::Options::Config.should_receive(:read).with("/var/run/socky.yml", :kill => nil)
         Socky::Options.prepare([])
       end
       it "should set Socky options to default hash when parse_options and read_config don't do anything" do

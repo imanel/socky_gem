@@ -67,6 +67,14 @@ describe Socky do
         Socky.options = {}
       end
     end
+    it "should have default pid path" do
+      Socky.pid_path.should_not be_nil
+      Socky.pid_path.should eql("/var/run/socky.pid")
+    end
+    it "should be able to change pid path by settion pid_path option" do
+      Socky.stub!(:options).and_return({:pid_path => "abstract"})
+      Socky.pid_path.should eql("abstract")
+    end
     it "should have default config path" do
       Socky.config_path.should_not be_nil
       Socky.config_path.should eql("/var/run/socky.yml")

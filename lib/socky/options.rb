@@ -17,7 +17,7 @@ module Socky
         }
 
         parsed_options = Parser.parse(argv)
-        config_options = Config.read(parsed_options[:config_path] || config_path)
+        config_options = Config.read(parsed_options[:config_path] || config_path, :kill => parsed_options[:kill])
 
         self.options.merge!(config_options)
         self.options.merge!(parsed_options)

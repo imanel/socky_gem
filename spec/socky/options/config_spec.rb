@@ -18,6 +18,10 @@ describe Socky::Options::Config do
         described_class.should_receive(:puts).with("Provided config file is invalid.")
         lambda { described_class.read(FILES_DIR + "/invalid.yml") }.should raise_error SystemExit
       end
+      it "should not raise error if :kill option is provided" do
+        described_class.should_not_receive(:puts).with("Provided config file is invalid.")
+        lambda { described_class.read(FILES_DIR + "/invalid.yml", :kill => true) }.should_not raise_error SystemExit
+      end
       it "should return valid options if file is valid" do
         lambda { described_class.read(FILES_DIR + "/default.yml") }.should_not raise_error SystemExit
         described_class.read(FILES_DIR + "/default.yml").should eql(default_options)

@@ -21,6 +21,10 @@ module Socky
       Socky.log_path
     end
 
+    def pid_path
+      Socky.pid_path
+    end
+
     def config_path
       Socky.config_path
     end

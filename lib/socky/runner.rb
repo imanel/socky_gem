@@ -5,7 +5,14 @@ module Socky
     class << self
       def run(argv = ARGV)
         server = self.new(argv)
-        server.start
+
+        if options[:kill]
+          server.kill_pid
+        elsif options[:daemonize]
+          server.daemonize
+        else
+          server.start
+        end
       end
     end
 
@@ -40,5 +47,38 @@ module Socky
       EventMachine.stop
     end
 
+    def store_pid(pid)
+     FileUtils.mkdir_p(File.dirname(pid_path))
+     File.open(pid_path, 'w'){|f| f.write("#{pid}\n")}
+    rescue => e
+      puts e
+      exit
+    end
+
+    def daemonize
+      fork do
+         Process.setsid
+         exit if fork
+         store_pid(Process.pid)
+         # Dir.chdir "/" # Mucks up logs
+         File.umask 0000
+         STDIN.reopen "/dev/null"
+         STDOUT.reopen "/dev/null", "a"
+         STDERR.reopen STDOUT
+         start
+       end
+    end
+
+    def kill_pid
+      begin
+        pid = IO.read(pid_path).chomp.to_i
+        FileUtils.rm pid_path
+        Process.kill(9, pid)
+        puts "killed PID: #{pid}"
+      rescue => e
+        puts e
+      end
+      exit
+    end
   end
 end

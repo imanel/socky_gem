@@ -37,6 +37,16 @@ describe Socky::Options::Parser do
           described_class.parse([function]).should eql({:secure => true})
         end
       end
+      it "on -P or --pid should set pid_path to provided path" do
+        ["-P","--pid"].each do |function|
+          described_class.parse([function,"/tmp/socky.pid"]).should eql({:pid_path => "/tmp/socky.pid"})
+        end
+      end
+      it "on -d or --daemon should set daemon mode on" do
+        ["-d","--daemon"].each do |function|
+          described_class.parse([function]).should eql({:daemonize => true})
+        end
+      end
       it "on -l or --log should set log_path to provided path" do
         ["-l","--log"].each do |function|
           described_class.parse([function,"/tmp/socky.log"]).should eql({:log_path => "/tmp/socky.log"})

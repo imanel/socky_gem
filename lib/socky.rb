@@ -37,6 +37,10 @@ module Socky
       options[:log_path] || nil
     end
 
+    def pid_path
+      options[:pid_path] || File.join(%w( / var run socky.pid ))
+    end
+
     def config_path
       options[:config_path] || File.join(%w( / var run socky.yml ))
     end

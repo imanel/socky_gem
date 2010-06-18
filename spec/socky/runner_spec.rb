@@ -12,8 +12,19 @@ describe Socky::Runner do
         described_class.should_receive(:new).with("some args")
         described_class.run("some args")
       end
-      it "should call #start on new instance of self" do
+      it "should call #start on new instance of self if daemonize option is false" do
+        Socky.stub(:options).and_return({:daemonize => false})
         @server.should_receive(:start)
+        described_class.run
+      end
+      it "should call #daemonize on new instance of self if daemonize option is true" do
+        Socky.stub(:options).and_return({:daemonize => true})
+        @server.should_receive(:daemonize)
+        described_class.run
+      end
+      it "should call #kill_pid on new instance of self if kill option is true" do
+        Socky.stub(:options).and_return({:kill => true})
+        @server.should_receive(:kill_pid)
         described_class.run
       end
     end

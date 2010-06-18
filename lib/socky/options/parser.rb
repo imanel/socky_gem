@@ -33,9 +33,23 @@ module Socky
               result[:secure] = true
             end
 
+            opts.separator ""; opts.separator "Daemonization:"
+
+            opts.on("-d", "--daemon", "Daemonize mode") do
+              result[:daemonize] = true
+            end
+
+            opts.on("-P", "--pid FILE", String, "Path to PID file when using -d option") do |path|
+              result[:pid_path] = File.expand_path(path)
+            end
+
+            opts.on("-k", "--kill", "Kill daemon from specified pid file path") do
+              result[:kill] = true
+            end
+
             opts.separator ""; opts.separator "Logging:"
 
-            opts.on("-l", "--log FILE", String, "Path to print debugging information.", "(default: #{Socky.log_path})") do |path|
+            opts.on("-l", "--log FILE", String, "Path to print debugging information.", "(Print to STDOUT if empty)") do |path|
               result[:log_path] = File.expand_path(path)
             end
 

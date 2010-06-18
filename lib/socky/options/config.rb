@@ -21,14 +21,18 @@ module Socky
       end
 
       class << self
-        def read(path)
+        def read(path, args = {})
           raise(NoConfigFile, "You must generate a config file (socky -g filename.yml)") unless File.exists?(path)
           result = YAML::load(ERB.new(IO.read(path)).result)
           raise(InvalidConfig, "Provided config file is invalid.") unless result.is_a?(Hash)
           result
         rescue SockyError => error
-          puts error.message
-          exit
+          if args[:kill]
+            return {}
+          else
+            puts error.message
+            exit
+          end
         end
 
         def generate(path)
@@ -56,6 +60,7 @@ module Socky
 # :timeout: 3
 
 # :log_path: /var/log/socky.log
+# :pid_path: /var/run/socky.pid
 EOF
       end
 
