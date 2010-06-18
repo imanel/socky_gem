@@ -28,7 +28,7 @@ module Socky
       end
 
       def authenticate_as_admin
-        secret == options[:secret]
+        options[:secret].nil? || secret == options[:secret]
       end
 
       def authenticate_as_user

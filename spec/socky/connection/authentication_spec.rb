@@ -85,6 +85,11 @@ describe Socky::Connection::Authentication do
         Socky.stub!(:options).and_return({:secret => "test"})
         authenticate_as_admin.should be_false
       end
+      it "should return true if server secret is nil" do
+        stub!(:secret).and_return("abstract")
+        Socky.stub!(:options).and_return({:secret => nil})
+        authenticate_as_admin.should be_true
+      end
     end
     it "#authenticate_as_user should call #authenticated_by_url?" do
       should_receive(:authenticated_by_url?)
