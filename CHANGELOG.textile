@@ -7,7 +7,7 @@ h2. Edge
 ** support for websocket draft 76
 ** support for wss/SSL connections
 ** socky can now be started in 'daemon' mode
-** socku now sending all messages in JSON format
+** socky now sending all messages in JSON format
 * bugfixes:
 ** socky will no longer crash when when request query is invalid - i.e. chrome 6.0.*(with websocket draft76) and em-websocket 0.0.6
 
