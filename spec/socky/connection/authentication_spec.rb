@@ -7,6 +7,7 @@ describe Socky::Connection::Authentication do
     context "#subscribe_request" do
       before(:each) do
         stub!(:admin).and_return(false)
+        stub!(:send_data)
       end
       it "should not call #send_subscribe_request if already authenticated" do
         stub!(:authenticated?).and_return(true)

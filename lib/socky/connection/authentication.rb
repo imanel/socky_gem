@@ -8,9 +8,11 @@ module Socky
           if response
             debug [self.name, "authentication successed"]
             add_to_pool
+            send_authentication("success")
             @authenticated_by_url = true
           else
             debug [self.name, "authentication failed"]
+            send_authentication("failure")
             disconnect
           end
         end unless admin || authenticated?
@@ -21,6 +23,10 @@ module Socky
           remove_from_pool
           send_unsubscribe_request{} unless admin
         end
+      end
+
+      def send_authentication(msg)
+        send_data({:type => :authentication, :body => msg})
       end
 
       def authenticated?
