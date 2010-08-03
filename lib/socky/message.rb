@@ -38,30 +38,8 @@ module Socky
     end
 
     def broadcast
-      case params[:type].to_sym
-        when :to_clients then broadcast_to_clients
-        when :to_channels then broadcast_to_channels
-        when :to_clients_on_channels then broadcast_to_clients_on_channels
-        else raise
-      end
-    rescue
-      raise(InvalidQuery, "unknown broadcast type")
-    end
-
-    def broadcast_to_clients
-      verify :clients
-      Socky::Server.send_to_clients(params[:body], params[:clients])
-    end
-
-    def broadcast_to_channels
-      verify :channels
-      Socky::Server.send_to_channels(params[:body], params[:channels])
-    end
-
-    def broadcast_to_clients_on_channels
-      verify :clients
-      verify :channels
-      Socky::Server.send_to_clients_on_channels(params[:body], params[:clients], params[:channels])
+      connections = Socky::Connection.find(params)
+      send_message(params[:body], connections)
     end
 
     def query
@@ -77,13 +55,12 @@ module Socky
       respond Socky::Connection.find_all
     end
 
-    def verify(field)
-      params[field] = params[field].to_a unless params[field].is_a?(Array)
-      params[field] = params[field].collect(&:to_s)
-    end
-
     def respond(message)
       creator.send_message(message)
+    end
+
+    def send_message(message, connections)
+      connections.each{|connection| connection.send_message message}
     end
 
   end

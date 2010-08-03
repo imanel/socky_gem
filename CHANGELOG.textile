@@ -4,6 +4,8 @@ h2. Edge
 
 * new features:
 ** server now send authentication status
+** new syntax
+** option to exclude clients/channels
 * bugfixes:
 ** none
 

@@ -75,86 +75,17 @@ describe Socky::Message do
       end
     end
     context "#broadcast" do
-      it "should call #broadcast_to_clients if message type is :to_clients" do
-        @message.stub!(:params).and_return({:type => :to_clients})
-        @message.stub!(:broadcast_to_clients)
-        @message.should_receive(:broadcast_to_clients)
+      it "should select target connections basing on params" do
+        @message.stub!(:params).and_return({:some => :abstract})
+        @message.stub!(:send_message)
+        Socky::Connection.should_receive(:find).with({:some => :abstract})
         @message.broadcast
       end
-      it "should not distinguish between string and symbol in type" do
-        @message.stub!(:params).and_return({:type => 'to_clients'})
-        @message.stub!(:broadcast_to_clients)
-        @message.should_receive(:broadcast_to_clients)
+      it "should call #send_message with message body and connection list" do
+        @message.stub!(:params).and_return({:body => "some message"})
+        Socky::Connection.stub!(:find).and_return(["first","second"])
+        @message.should_receive(:send_message).with("some message", ["first", "second"])
         @message.broadcast
-      end
-      it "should call #broadcast_to_channels if message type is :to_channels" do
-        @message.stub!(:params).and_return({:type => :to_channels})
-        @message.stub!(:broadcast_to_channels)
-        @message.should_receive(:broadcast_to_channels)
-        @message.broadcast
-      end
-      it "should call #broadcast_to_clients_on_channels if message type is :to_clients_on_channels" do
-        @message.stub!(:params).and_return({:type => :to_clients_on_channels})
-        @message.stub!(:broadcast_to_clients_on_channels)
-        @message.should_receive(:broadcast_to_clients_on_channels)
-        @message.broadcast
-      end
-      it "should raise error if message type is nil" do
-        @message.stub!(:params).and_return({:type => nil})
-        lambda {@message.broadcast}.should raise_error Socky::SockyError
-      end
-      it "should raise error if message type is not one of :to_clients, :to_channels or :to_cleints_on_channels" do
-        @message.stub!(:params).and_return({:type => "invalid"})
-        lambda {@message.broadcast}.should raise_error Socky::SockyError
-      end
-    end
-    context "#broadcast_to_clients" do
-      before(:each) do
-        @message.stub!(:verify)
-        Socky::Server.stub!(:send_to_clients)
-      end
-      it "should verify :clients params existence" do
-        @message.should_receive(:verify).with(:clients)
-        @message.broadcast_to_clients
-      end
-      it "should call socky server #send_to_clients with own params" do
-        @message.stub!(:params).and_return(:body => "some message", :clients => "some clients")
-        Socky::Server.should_receive(:send_to_clients).with("some message", "some clients")
-        @message.broadcast_to_clients
-      end
-    end
-    context "#broadcast_to_channels" do
-      before(:each) do
-        @message.stub!(:verify)
-        Socky::Server.stub!(:send_to_channels)
-      end
-      it "should verify :channels params existence" do
-        @message.should_receive(:verify).with(:channels)
-        @message.broadcast_to_channels
-      end
-      it "should call socky server #send_to_channels with own params" do
-        @message.stub!(:params).and_return(:body => "some message", :channels => "some channels")
-        Socky::Server.should_receive(:send_to_channels).with("some message", "some channels")
-        @message.broadcast_to_channels
-      end
-    end
-    context "#broadcast_to_clients_on_channels" do
-      before(:each) do
-        @message.stub!(:verify)
-        Socky::Server.stub!(:send_to_clients_on_channels)
-      end
-      it "should verify :clients params existence" do
-        @message.should_receive(:verify).with(:clients)
-        @message.broadcast_to_clients_on_channels
-      end
-      it "should verify :channels params existence" do
-        @message.should_receive(:verify).with(:channels)
-        @message.broadcast_to_clients_on_channels
-      end
-      it "should call socky server #send_to_clients_on_channels with own params" do
-        @message.stub!(:params).and_return(:body => "some message", :clients => "some clients", :channels => "some channels")
-        Socky::Server.should_receive(:send_to_clients_on_channels).with("some message", "some clients", "some channels")
-        @message.broadcast_to_clients_on_channels
       end
     end
     context "#query" do
@@ -191,28 +122,6 @@ describe Socky::Message do
       it "should respond current connection list" do
         @message.should_receive(:respond).with("find results")
         @message.query_show_connections
-      end
-    end
-    context "#verify" do
-      it "should convert posted field to empty array if field is nil" do
-        @message.params[:clients] = nil
-        @message.verify :clients
-        @message.params[:clients].should eql([])
-      end
-      it "should convert posted field to array containing field value if field is not array" do
-        @message.params[:clients] = "some client"
-        @message.verify :clients
-        @message.params[:clients].should eql(["some client"])
-      end
-      it "should not convert field if field is array" do
-        @message.params[:clients] = ["some client"]
-        @message.verify :clients
-        @message.params[:clients].should eql(["some client"])
-      end
-      it "should change every array value to string" do
-        @message.params[:clients] = [1,2,3]
-        @message.verify :clients
-        @message.params[:clients].should eql(["1","2","3"])
       end
     end
     context "#respond" do

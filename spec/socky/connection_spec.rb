@@ -55,9 +55,9 @@ describe Socky::Connection do
         @connection.channels.should_not be_nil
         @connection.channels.class.should eql(Array)
       end
-      it "should return empty table if socket request data 'channels' is nil" do
+      it "should return table with nil if socket request data 'channels' is nil" do
         @connection.socket.request["Query"]["channels"] = nil
-        @connection.channels.should eql([])
+        @connection.channels.should eql([nil])
       end
       it "should return table of channels if provided and separated by comma" do
         @connection.socket.request["Query"]["channels"] = "aaa,bbb,ccc"

@@ -38,6 +38,8 @@ module Socky
 
     def channels
       @channels ||= query["channels"].to_s.split(",").collect(&:strip).reject(&:empty?)
+      @channels[0] ||= nil # Every user should have at last one channel
+      @channels
     end
 
     def subscribe
