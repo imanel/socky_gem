@@ -1,6 +1,8 @@
 h1. Changelog
 
-h2. Edge
+h2. 0.1.0 / 2010-08-03
+
+*IMPORTANT! This version will not work with plugin version lower than 0.1.0*
 
 * new features:
 ** server now send authentication status
