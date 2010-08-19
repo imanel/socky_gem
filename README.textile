@@ -6,7 +6,7 @@ h2. Getting Started
 
 * "Install":http://wiki.github.com/imanel/socky_gem/install the gem
 * Read up about its "Usage":http://wiki.github.com/imanel/socky_gem/usage and "Configuration":http://wiki.github.com/imanel/socky_gem/configuration
-* Try "Example Application":http://github.com/imanel/socky_example
+* Try "Example Application":http://github.com/imanel/socky_example or "demo page":http://sockydemo.imanel.org
 * Fork and Contribute your own modifications
 
 h2. Runtime Dependencies
