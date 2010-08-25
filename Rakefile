@@ -17,7 +17,7 @@ begin
     gemspec.email = "b.potocki@imanel.org"
     gemspec.homepage = "http://github.com/imanel/socky_gem"
     gemspec.authors = ["Bernard Potocki"]
-    gemspec.add_dependency('em-websocket', '>= 0.1.2')
+    gemspec.add_dependency('em-websocket', '>= 0.1.4')
     gemspec.add_dependency('em-http-request')
     gemspec.files.exclude ".gitignore"
   end

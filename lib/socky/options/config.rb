@@ -61,6 +61,10 @@ module Socky
 
 # :log_path: /var/log/socky.log
 # :pid_path: /var/run/socky.pid
+
+# :tls_options:
+#   :private_key_file: /private/key
+#   :cert_chain_file: /ssl/certificate
 EOF
       end
 

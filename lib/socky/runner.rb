@@ -29,7 +29,7 @@ module Socky
         trap("INT")  { stop }
 
         EventMachine::start_server("0.0.0.0", options[:port], EventMachine::WebSocket::Connection,
-            :debug => options[:deep_debug], :secure => options[:secure]) do |ws|
+            :debug => options[:deep_debug], :secure => options[:secure], :tls_options => options[:tls_options]) do |ws|
 
           connection = Socky::Connection.new(ws)
           ws.onopen    { connection.subscribe }
