@@ -1,6 +1,6 @@
 h1. Changelog
 
-h2. Edge
+h2. 0.1.1 / 2010-08-25
 
 * new features:
 ** socky has now support for signed certificates by :tls_options config option
