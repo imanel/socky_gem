@@ -1,6 +1,6 @@
 h1. Socky
 
-Socky is push server for Ruby on Rails based on WebSockets. It allows you to breake border between your application and client browser by letting the server initialize a connection and push data to the client.
+Socky is push server for Ruby on Rails based on WebSockets. It allows you to break border between your application and client browser by letting the server initialize a connection and push data to the client.
 
 h2. Getting Started
 
