@@ -89,7 +89,7 @@ module Socky
       connection_pool.delete(self)
     end
 
-    def to_json(options = {})
+    def to_json(*args)
       {
         :id => self.object_id,
         :client_id => self.client,
