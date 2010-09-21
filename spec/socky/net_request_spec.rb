@@ -23,7 +23,7 @@ describe Socky::NetRequest do
       end
       it "should call block with false if request return status other than 200" do
         EM.run do
-          described_class.post("http://127.0.0.1:8080/fail") do |response|
+          described_class.post("http://127.0.0.1:8765/fail") do |response|
             response.should be_false
             EM.stop
           end.should be_true
@@ -31,7 +31,7 @@ describe Socky::NetRequest do
       end
       it "should call block with true if request return status 200" do
         EM.run do
-          described_class.post("http://127.0.0.1:8080/") do |response|
+          described_class.post("http://127.0.0.1:8765/") do |response|
             response.should be_true
             EM.stop
           end.should be_true
