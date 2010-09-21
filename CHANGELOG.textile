@@ -1,6 +1,6 @@
 h1. Changelog
 
-h2. Edge
+h2. 0.1.2 / 2010-09-21
 
 * new features:
 ** none
