@@ -1,5 +1,13 @@
 h1. Changelog
 
+h2. Edge
+
+* new features:
+** none
+* bugfixes:
+** fix routes to spec_helper in ruby 1.9.2
+** ruby 1.9 will no longer raise errors on String to_a call
+
 h2. 0.1.1 / 2010-08-25
 
 * new features:
