@@ -1,5 +1,5 @@
-require 'spec/spec_helper'
-require 'spec/stallion'
+require 'spec_helper'
+require 'stallion'
 
 describe Socky::NetRequest do
   

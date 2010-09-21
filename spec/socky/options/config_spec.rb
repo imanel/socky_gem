@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 FILES_DIR = File.join(File.dirname(__FILE__), '..', '..', 'files')
 

@@ -2,5 +2,5 @@ require 'rubygems'
 require 'spec'
 require "spec/autorun"
 
-require 'lib/socky'
+require 'socky'
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}

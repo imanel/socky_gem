@@ -1,4 +1,4 @@
-require 'spec/spec_helper'
+require 'spec_helper'
 
 describe Socky::Connection::Authentication do
   include Socky::Connection::Authentication
