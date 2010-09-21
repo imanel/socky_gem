@@ -24,12 +24,3 @@ begin
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
 end
-
-begin
-  require 'metric_fu'
-  MetricFu::Configuration.run do |config|
-    # config.graph_engine = :gchart
-  end
-rescue LoadError
-  puts "MetricFu not available. Install it with: gem install metric_fu"
-end
