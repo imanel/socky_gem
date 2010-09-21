@@ -89,11 +89,11 @@ module Socky
       connection_pool.delete(self)
     end
 
-    def to_json
+    def to_json(options = {})
       {
         :id => self.object_id,
         :client_id => self.client,
-        :channels => self.channels
+        :channels => self.channels.reject{|channel| channel.nil?}
       }.to_json
     end
 
