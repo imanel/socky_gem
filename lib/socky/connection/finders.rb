@@ -28,8 +28,8 @@ module Socky
           # Empty table means "no users" - nil means "all users"
           return [] if (included_clients.is_a?(Array) && included_clients.empty?)
 
-          included_clients = included_clients.to_a
-          excluded_clients = excluded_clients.to_a
+          included_clients = to_array(included_clients)
+          excluded_clients = to_array(excluded_clients)
 
           connections.collect do |connection|
             connection if (included_clients.empty? || included_clients.include?(connection.client)) && !excluded_clients.include?(connection.client)
@@ -40,14 +40,20 @@ module Socky
           # Empty table means "no channels" - nil means "all channels"
           return [] if (included_channels.is_a?(Array) && included_channels.empty?)
 
-          included_channels = included_channels.to_a
-          excluded_channels = excluded_channels.to_a
+          included_channels = to_array(included_channels)
+          excluded_channels = to_array(excluded_channels)
 
           connections.collect do |connection|
             connection if connection.channels.any? do |channel|
               (included_channels.empty? || included_channels.include?(channel) ) && !excluded_channels.include?(channel)
             end
           end.compact
+        end
+
+        def to_array(obj)
+          return [] if obj.nil?
+          return obj if obj.is_a?(Array)
+          [obj]
         end
 
       end
