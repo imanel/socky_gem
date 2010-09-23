@@ -51,8 +51,9 @@ module Socky
           debug [self.name, "sending subscribe request to", subscribe_url]
           Socky::NetRequest.post(subscribe_url, params_for_request, &block)
           true
+        else
+          yield true
         end
-        true
       end
 
       def send_unsubscribe_request(&block)
@@ -61,7 +62,7 @@ module Socky
           debug [self.name, "sending unsubscribe request to", unsubscribe_url]
           Socky::NetRequest.post(unsubscribe_url, params_for_request, &block)
         else
-          true
+          yield true
         end
       end
 
