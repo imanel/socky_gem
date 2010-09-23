@@ -119,25 +119,25 @@ describe Socky::Connection::Authentication do
       it "should not call Socky::NetRequest#post if socky option subscribe_url is nil" do
         Socky.stub!(:options).and_return({:subscribe_url => nil})
         Socky::NetRequest.should_not_receive(:post)
-        send_subscribe_request
+        send_subscribe_request{}
       end
     end
     context "#send_unsubscribe_request" do
       it "should build params for request if socky option unsubscribe_url is not nil" do
         Socky.stub!(:options).and_return({:unsubscribe_url => "any"})
         should_receive(:params_for_request)
-        send_unsubscribe_request
+        send_unsubscribe_request{}
       end
       it "should call Socky::NetRequest#post if socky option unsubscribe_url is not nil" do
         Socky.stub!(:options).and_return({:unsubscribe_url => "any"})
         stub!(:params_for_request)
         Socky::NetRequest.should_receive(:post)
-        send_unsubscribe_request
+        send_unsubscribe_request{}
       end
       it "should not call Socky::NetRequest#post if socky option unsubscribe_url is nil" do
         Socky.stub!(:options).and_return({:unsubscribe_url => nil})
         Socky::NetRequest.should_not_receive(:post)
-        send_unsubscribe_request
+        send_unsubscribe_request{}
       end
     end
     context "#params_for_request" do
