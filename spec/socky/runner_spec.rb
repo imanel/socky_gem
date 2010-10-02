@@ -49,10 +49,6 @@ describe Socky::Runner do
           EM.run do
             MSG = "Hello World!"
             EventMachine.add_timer(0.1) do
-              # This will not work at this time because EM::HttpRequest doesn't support
-              # sending messages before final authentication is done. In order to test
-              # that you will need to comment out Socky::Connection::Authentication#send_authentication
-              # content. Will be fixed later.
               http = EventMachine::HttpRequest.new('ws://127.0.0.1:12345/').get :timeout => 0
               http.errback {
                 EM.stop

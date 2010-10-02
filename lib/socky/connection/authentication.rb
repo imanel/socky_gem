@@ -8,12 +8,16 @@ module Socky
           if response
             debug [self.name, "authentication successed"]
             add_to_pool
-            send_authentication("success")
+            EventMachine.add_timer(0.1) do
+              send_authentication("success")
+            end
             @authenticated_by_url = true
           else
             debug [self.name, "authentication failed"]
-            send_authentication("failure")
-            disconnect
+            EventMachine.add_timer(0.1) do
+              send_authentication("failure")
+              disconnect
+            end
           end
         end unless admin || authenticated?
       end

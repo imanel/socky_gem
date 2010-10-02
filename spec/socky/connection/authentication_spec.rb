@@ -20,22 +20,33 @@ describe Socky::Connection::Authentication do
         subscribe_request
       end
       it "should add self to connection list if #send_subscribe_request block is true" do
-        stub!(:authenticated?).and_return(false)
-        stub!(:send_subscribe_request).and_yield(true)
-        should_receive(:add_to_pool)
-        subscribe_request
+        EM.run do
+          stub!(:authenticated?).and_return(false)
+          stub!(:send_subscribe_request).and_yield(true)
+          should_receive(:add_to_pool)
+          subscribe_request
+          EM.stop
+        end
       end
       it "should be authenticated by url if #send_subscribe_request block is true" do
-        stub!(:authenticated?).and_return(false)
-        stub!(:send_subscribe_request).and_yield(true)
-        stub!(:add_to_pool)
-        subscribe_request
-        authenticated_by_url?.should be_true
+        EM.run do
+          stub!(:authenticated?).and_return(false)
+          stub!(:send_subscribe_request).and_yield(true)
+          stub!(:add_to_pool)
+          subscribe_request
+          authenticated_by_url?.should be_true
+          EM.stop
+        end
       end
       it "should disconnect if #send_subscribe_request block is false" do
-        stub!(:send_subscribe_request).and_yield(false)
-        should_receive(:disconnect)
-        subscribe_request
+        EM.run do
+          stub!(:send_subscribe_request).and_yield(false)
+          should_receive(:disconnect)
+          subscribe_request
+          EM.add_timer(0.1) do
+            EM.stop
+          end
+        end
       end
     end
     context "#unsubscribe_request" do
