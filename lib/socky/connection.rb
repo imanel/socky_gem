@@ -6,7 +6,7 @@ module Socky
   class Connection
     include Socky::Misc
     include Socky::Connection::Authentication
-    include Socky::Connection::Finders
+    extend Socky::Connection::Finders
 
     attr_reader :socket
 
