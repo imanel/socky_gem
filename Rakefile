@@ -1,4 +1,7 @@
 require 'rake'
+require 'rake/clean'
+CLEAN.include %w(**/*.{log,rbc})
+
 require 'spec/rake/spectask'
 
 task :default => :spec
@@ -19,6 +22,7 @@ begin
     gemspec.authors = ["Bernard Potocki"]
     gemspec.add_dependency('em-websocket', '>= 0.1.4')
     gemspec.add_dependency('em-http-request')
+    gemspec.add_dependency('json')
     gemspec.files.exclude ".gitignore"
   end
 rescue LoadError
