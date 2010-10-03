@@ -29,12 +29,14 @@ module Socky
         end
       end
 
-      def send_authentication(msg)
-        send_data({:type => :authentication, :body => msg})
-      end
-
       def authenticated?
         @authenticated ||= (admin ? authenticate_as_admin : authenticate_as_user)
+      end
+
+      private
+
+      def send_authentication(msg)
+        send_data({:type => :authentication, :body => msg})
       end
 
       def authenticate_as_admin

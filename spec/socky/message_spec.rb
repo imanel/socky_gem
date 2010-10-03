@@ -47,89 +47,56 @@ describe Socky::Message do
   context "instance" do
     before(:each) { @message = described_class.new(@connection, {}.to_json) }
     context "#process" do
-      it "should call #broadcast if message command is :broadcast" do
-        @message.stub!(:params).and_return({:command => :broadcast})
-        @message.stub!(:broadcast)
-        @message.should_receive(:broadcast)
-        @message.process
-      end
-      it "should not distinguish between string and symbol in command" do
-        @message.stub!(:params).and_return({:command => 'broadcast'})
-        @message.stub!(:broadcast)
-        @message.should_receive(:broadcast)
-        @message.process
-      end
-      it "should call #query if message command is :query" do
-        @message.stub!(:params).and_return({:command => :query})
-        @message.stub!(:query)
-        @message.should_receive(:query)
-        @message.process
+      before(:each) do
+        @message.stub!(:send_message)
       end
       it "should raise error if message command is nil" do
         @message.stub!(:params).and_return({:command => nil})
-        lambda {@message.process}.should raise_error Socky::SockyError
+        lambda {@message.process}.should raise_error(Socky::SockyError, "unknown command")
       end
       it "should raise error if message command is neither :broadcast nor :query" do
-        @message.stub!(:params).and_return({:command => "invalid"})
-        lambda {@message.process}.should raise_error Socky::SockyError
+        @message.stub!(:params).and_return({:command => :invalid})
+        lambda {@message.process}.should raise_error(Socky::SockyError, "unknown command")
+      end
+      it "should not distinguish between string and symbol in command" do
+        @message.stub!(:params).and_return({:command => 'broadcast'})
+        lambda {@message.process}.should_not raise_error(Socky::SockyError, "unknown command")
+      end
+      context ":broadcast" do
+        it "should select target connections basing on params" do
+          @message.stub!(:params).and_return({:command => :broadcast, :some => :abstract})
+          Socky::Connection.should_receive(:find).with(:some => :abstract)
+          @message.process
+        end
+        it "should send_message with message body and connection list" do
+          @message.stub!(:params).and_return({:command => :broadcast, :body => "some message"})
+          Socky::Connection.stub!(:find).and_return(["first","second"])
+          @message.should_receive(:send_message).with("some message", ["first", "second"])
+          @message.process
+        end
+      end
+      context ":query" do
+        it "should raise error if query type is nil" do
+          @message.stub!(:params).and_return(:command => :query, :type => nil)
+          lambda{ @message.process }.should raise_error(Socky::SockyError, "unknown query type")
+        end
+        it "should raise error if query type is invalid" do
+          @message.stub!(:params).and_return(:command => :query, :type => :invalid)
+          lambda{ @message.process }.should raise_error(Socky::SockyError, "unknown query type")
+        end
+        it "should not distinguish between string and symbol in command" do
+          @message.stub!(:params).and_return({:command => :query, :type => "show_connections"})
+          lambda {@message.process}.should_not raise_error(Socky::SockyError, "unknown query type")
+        end
+        context "=> :show_connections" do
+          it "should return current connection list to creator" do
+            @message.stub!(:params).and_return(:command => :query, :type => :show_connections)
+            Socky::Connection.stub!(:find_all).and_return(["find results"])
+            @connection.should_receive(:send_message).with(["find results"])
+            @message.process
+          end
+        end
       end
     end
-    context "#broadcast" do
-      it "should select target connections basing on params" do
-        @message.stub!(:params).and_return({:some => :abstract})
-        @message.stub!(:send_message)
-        Socky::Connection.should_receive(:find).with({:some => :abstract})
-        @message.broadcast
-      end
-      it "should call #send_message with message body and connection list" do
-        @message.stub!(:params).and_return({:body => "some message"})
-        Socky::Connection.stub!(:find).and_return(["first","second"])
-        @message.should_receive(:send_message).with("some message", ["first", "second"])
-        @message.broadcast
-      end
-    end
-    context "#query" do
-      it "should call #query_show_connections if message type is :show_connections" do
-        @message.stub!(:params).and_return({:type => :show_connections})
-        @message.stub!(:query_show_connections)
-        @message.should_receive(:query_show_connections)
-        @message.query
-      end
-      it "should not distinguish between string and symbol in type" do
-        @message.stub!(:params).and_return({:type => 'show_connections'})
-        @message.stub!(:query_show_connections)
-        @message.should_receive(:query_show_connections)
-        @message.query
-      end
-      it "should raise error if message type is nil" do
-        @message.stub!(:params).and_return({:type => nil})
-        lambda{ @message.query }.should raise_error Socky::SockyError
-      end
-      it "should raise error if message type is not :show_connections" do
-        @message.stub!(:params).and_return({:type => "invalid"})
-        lambda{ @message.query }.should raise_error Socky::SockyError
-      end
-    end
-    context "#query_show_connections" do
-      before(:each) do
-        Socky::Connection.stub!(:find_all).and_return("find results")
-        @message.stub!(:respond)
-      end
-      it "should ask for all connections" do
-        Socky::Connection.should_receive(:find_all)
-        @message.query_show_connections
-      end
-      it "should respond current connection list" do
-        @message.should_receive(:respond).with("find results")
-        @message.query_show_connections
-      end
-    end
-    context "#respond" do
-      it "should call creator #send_message" do
-        @connection.should_receive(:send_message)
-        @message.respond({:test => true})
-      end
-    end
-
   end
 end

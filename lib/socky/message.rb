@@ -28,14 +28,14 @@ module Socky
     def process
       debug [self.name, "processing", params.inspect]
 
-      case params[:command].to_sym
-        when :broadcast then broadcast
-        when :query then query
-        else raise
+      case params.delete(:command).to_s
+        when "broadcast" then broadcast
+        when "query" then query
+        else raise(InvalidQuery, "unknown command")
       end
-    rescue
-      raise(InvalidQuery, "unknown command")
     end
+
+    private
 
     def broadcast
       connections = Socky::Connection.find(params)
@@ -43,12 +43,10 @@ module Socky
     end
 
     def query
-      case params[:type].to_sym
-        when :show_connections then query_show_connections
-        else raise
+      case params[:type].to_s
+        when "show_connections" then query_show_connections
+        else raise(InvalidQuery, "unknown query type")
       end
-    rescue
-      raise(InvalidQuery, "unknown query type")
     end
 
     def query_show_connections

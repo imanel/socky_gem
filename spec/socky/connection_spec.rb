@@ -103,7 +103,7 @@ describe Socky::Connection do
     it "#send_data should send message by socket in json format" do
       @connection.socket.stub!(:send)
       @connection.socket.should_receive(:send).with({:test => "abstract"}.to_json)
-      @connection.send_data({:test => "abstract"})
+      @connection.send(:send_data, {:test => "abstract"})
     end
     it "#disconnect should close connection after writing" do
       @connection.socket.stub!(:close_connection_after_writing)
@@ -113,7 +113,7 @@ describe Socky::Connection do
     context "#add_to_pool" do
       it "should add self to class connection list if self isn't already on list or self isn't admin" do
         @connection.stub!(:admin).and_return(false)
-        @connection.add_to_pool
+        @connection.send(:add_to_pool)
         described_class.connections.should include(@connection)
         described_class.connections.should have(1).item
       end
@@ -121,20 +121,20 @@ describe Socky::Connection do
         described_class.connections << @connection
         described_class.connections.should have(1).item
         @connection.stub!(:admin).and_return(false)
-        @connection.add_to_pool
+        @connection.send(:add_to_pool)
         described_class.connections.should include(@connection)
         described_class.connections.should have(1).item
       end
       it "should not add self to class connection list if self is admin" do
         @connection.stub!(:admin).and_return(true)
-        @connection.add_to_pool
+        @connection.send(:add_to_pool)
         described_class.connections.should_not include(@connection)
       end
     end
     it "#remove_from_pool should delete self from class connection list" do
       described_class.connections << @connection
       described_class.connections.should have(1).item
-      @connection.remove_from_pool
+      @connection.send(:remove_from_pool)
       described_class.connections.should_not include(@connection)
       described_class.connections.should have(0).items
     end

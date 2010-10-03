@@ -30,9 +30,13 @@ describe Socky::Runner do
     end
     context "#new" do
       it "should prepare options from args" do
-        Socky::Options.stub!(:prepare)
-        Socky::Options.should_receive(:prepare).with("some args")
-        described_class.new("some args")
+        begin
+          described_class.new(["-c", File.dirname(__FILE__) + "/../files/default.yml"])
+          Socky.options.class.should eql(Hash)
+          Socky.options.should_not be_empty
+        ensure
+          Socky.options = nil
+        end
       end
     end
   end

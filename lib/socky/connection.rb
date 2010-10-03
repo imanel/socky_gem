@@ -64,13 +64,23 @@ module Socky
       send_data({:type => :message, :body => msg})
     end
 
+    def disconnect
+      socket.close_connection_after_writing
+    end
+
+    def to_json(*args)
+      {
+        :id => self.object_id,
+        :client_id => self.client,
+        :channels => self.channels.reject{|channel| channel.nil?}
+      }.to_json
+    end
+
+    private
+
     def send_data(data)
       debug [self.name, "sending data", data.inspect]
       socket.send data.to_json
-    end
-
-    def disconnect
-      socket.close_connection_after_writing
     end
 
     def connection_pool
@@ -87,14 +97,6 @@ module Socky
 
     def remove_from_pool
       connection_pool.delete(self)
-    end
-
-    def to_json(*args)
-      {
-        :id => self.object_id,
-        :client_id => self.client,
-        :channels => self.channels.reject{|channel| channel.nil?}
-      }.to_json
     end
 
   end
