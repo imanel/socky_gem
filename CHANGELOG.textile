@@ -3,9 +3,11 @@ h1. Changelog
 h2. Edge
 
 * new features:
-** none
+** inline documentation
 * bugfixes:
 ** send authentication after finishing handshake
+** tests less using stubs and more real cases
+** fix some tests
 
 h2. 0.1.3 / 2010-09-23
 
