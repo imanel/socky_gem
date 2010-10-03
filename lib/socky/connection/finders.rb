@@ -1,5 +1,6 @@
 module Socky
   class Connection
+    # finders module - extends Socky::Connection
     module Finders
 
       # Return list of all connections

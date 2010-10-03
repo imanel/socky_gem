@@ -3,24 +3,23 @@ require 'erb'
 
 module Socky
   class Options
+    # config parser class - used by Socky::Options
     class Config
 
-      class NoConfigFile < Socky::SockyError #:nodoc:
-      end
-
-      class InvalidConfig < Socky::SockyError #:nodoc:
-      end
-
-      class AlreadyExists < Socky::SockyError #:nodoc:
-      end
-
-      class ConfigUnavailable < Socky::SockyError #:nodoc:
-      end
-
-      class SuccessfullyCreated < Socky::SockyError #:nodoc:
-      end
+      class NoConfigFile < Socky::SockyError; end #:nodoc:
+      class InvalidConfig < Socky::SockyError; end #:nodoc:
+      class AlreadyExists < Socky::SockyError; end #:nodoc:
+      class ConfigUnavailable < Socky::SockyError; end #:nodoc:
+      class SuccessfullyCreated < Socky::SockyError; end #:nodoc:
 
       class << self
+        # read config file or exits if file don't exists or is invalid
+        # @param [String] path path to valid yaml file
+        # @param [Hash] args args to rescue eventual problems
+        # @option args [Any] kill (nil) if not nil then empty hash will be returned if config file isn't found
+        # @return [Hash] parsed config options
+        # @raise [NoConfigFile] if file doesn't exists
+        # @raise [InvalidConfig] if file isn't valid yaml
         def read(path, args = {})
           raise(NoConfigFile, "You must generate a config file (socky -g filename.yml)") unless File.exists?(path)
           result = YAML::load(ERB.new(IO.read(path)).result)
@@ -35,6 +34,12 @@ module Socky
           end
         end
 
+        # generate default config file
+        # @see DEFAULT_CONFIG_FILE
+        # @param [String] path path to file that will be created
+        # @raise [AlreadyExists] if file exists(you must delete it manually)
+        # @raise [ConfigUnavailable] if file cannot be created(wrong privilages?)
+        # @raise [SuccessfullyCreated] if file is successfully created
         def generate(path)
           raise(AlreadyExists, "Config file already exists. You must remove it before generating a new one.") if File.exists?(path)
           File.open(path, 'w+') do |file|
@@ -46,6 +51,7 @@ module Socky
           exit
         end
 
+        # default config file content
         DEFAULT_CONFIG_FILE= <<-EOF
 :port: 8080
 :debug: false

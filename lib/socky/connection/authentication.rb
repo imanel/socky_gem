@@ -1,8 +1,16 @@
 module Socky
   class Connection
+    # authentication module - included in Socky::Connection
     module Authentication
       include Socky::Misc
 
+      # check if user is valid and then send him authentication data and add to pool
+      # if not then user is given failure response(so client javascript
+      # will know that is should not reconnect again) and then is disconnected
+      # admin user is automaticaly authenticated but isn't added to pool
+      # he will be authenticated when he will try to send message
+      # thanks to that admin don't need to wait for authentication confirmation
+      # on every connection so it will fasten things for him
       def subscribe_request
         send_subscribe_request do |response|
           if response
@@ -22,6 +30,9 @@ module Socky
         end unless admin || authenticated?
       end
 
+      # if user is authenticated then he is removed from pool and 
+      # unsubscribe notification is sent to server unless he is admin
+      # if user is not authenticated then nothing will happen
       def unsubscribe_request
         if authenticated?
           remove_from_pool
@@ -29,6 +40,9 @@ module Socky
         end
       end
 
+      # if user is admin then his secred is compared with server secred
+      # in user isn't admin then it checks if user is authenticated by
+      # server request(defaults to true if subscribe_url is nil)
       def authenticated?
         @authenticated ||= (admin ? authenticate_as_admin : authenticate_as_user)
       end

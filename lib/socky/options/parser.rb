@@ -2,9 +2,14 @@ require 'optparse'
 
 module Socky
   class Options
+    # STDIN options parser - used by Socky::Options
     class Parser
 
       class << self
+        # parse options(usually from STDIN)
+        # see source code for available options
+        # @param [Array] argv options for parser
+        # @return [Hash] parsed options from array
         def parse(argv)
           result = {}
           opts = OptionParser.new do |opts|
