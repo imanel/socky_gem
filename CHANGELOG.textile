@@ -1,6 +1,6 @@
 h1. Changelog
 
-h2. Edge
+h2. 0.2.0 / 2010-10-03
 
 * new features:
 ** inline documentation
