@@ -112,8 +112,9 @@ module Socky
     private
 
     def send_data(data)
-      debug [self.name, "sending data", data.inspect]
-      socket.send data.to_json
+      json_data = data.to_json
+      debug [self.name, "sending data", json_data.inspect]
+      socket.send json_data
     end
 
     def connection_pool
