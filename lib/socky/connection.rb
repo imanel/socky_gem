@@ -113,7 +113,7 @@ module Socky
 
     def send_data(data)
       json_data = data.to_json
-      debug [self.name, "sending data", json_data.inspect]
+      debug [self.name, "sending data", json_data]
       socket.send json_data
     end
 
