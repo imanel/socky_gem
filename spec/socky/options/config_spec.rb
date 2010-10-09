@@ -64,8 +64,6 @@ describe Socky::Options::Config do
     {
       :port => 8080,
       :debug => false,
-      :subscribe_url => "http://localhost:3000/socky/subscribe",
-      :unsubscribe_url => "http://localhost:3000/socky/unsubscribe",
       :secret => "my_secret_key",
       :secure => false
     }
