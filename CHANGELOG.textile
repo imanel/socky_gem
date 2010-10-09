@@ -1,5 +1,12 @@
 h1. Changelog
 
+h2. 0.2.1 / 2010-10-09
+
+* new features:
+** default config should have subscribe url's commented out for starting users
+* bugfixes:
+** show sent messages in true form instead of "inspect" one
+
 h2. 0.2.0 / 2010-10-03
 
 * new features:
