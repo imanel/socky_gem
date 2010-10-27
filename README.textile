@@ -1,5 +1,7 @@
 h1. Socky
 
-"socky" ruby server gem changed name to "socky-server".
-This is only transitional package. Please change install socky-server gem and remove this one.
-You can find repository "here":http://github.com/socky/socky-server-ruby
+Due to high interest in implementations of Socky in other languages and frameworks Socky gem is changing name from "socky" to "socky-server". Expect soon to see "socky-client" gem for ruby and separate one for framoworks like Rails.
+
+From today this is only transitional package. Please change install socky-server gem and remove this one.
+
+You can find new repository "here":http://github.com/socky/socky-server-ruby
